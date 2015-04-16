@@ -1,0 +1,29 @@
+#!/bin/sh
+# Start epics LTC2983 IOC
+
+PATH=/bin:/usr/bin:/sbin:/usr/sbin:/usr/local/bin
+
+case "$1" in
+  start)
+    echo -n "Starting LTC2983-ioc"
+    export EPICS_HOST_ARCH=linux-arm
+    export LD_LIBRARY_PATH=/opt/epics/base/lib/linux-arm
+    cd /opt/LTC2983-ioc/iocBoot/iocLTC2983
+    screen -d -m -S ioc /opt/LTC2983-ioc/bin/linux-arm/LTC2983 st.cmd
+    echo "."
+    ;;
+  stop)
+    echo -n "Stopping LTC2983-ioc"
+    kill -9 `/bin/pidof /opt/LTC2983-ioc/bin/linux-arm/LTC2983`
+    unset EPICS_HOST_ARCH
+    echo "."
+    ;;
+  force-reload|restart)
+    sh $0 stop
+    sh $0 start
+    ;;
+  *)
+    echo "Usage: /etc/init.d/epics-LTC2983 {start|stop|restart|force-reload}"
+    exit 1
+    ;;
+esac

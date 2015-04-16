@@ -1,0 +1,251 @@
+#
+# CHANNEL 2: thermistor 10K@25C
+#
+record(ai,"CH2:value") {
+  field(DTYP,"ADC channel")
+  field(SCAN,"1 second")
+  field(INP,"@2")
+  field(FLNK,"S1:TEMP01")
+  field(MDEL,-1)
+}
+
+record(calc,"S1:TEMP01") {
+  field(INPA,"CH2:value")
+  field(CALC,"A / 1024")
+  field(EGU,"degC")
+  field(HOPR,150)
+  field(LOPR,-55)
+  field(HIGH,45)
+  field(LOW,15)
+  field(HIHI,115)
+  field(LOLO,-35)
+  field(MDEL,-1)
+}
+
+#
+# CHANNEL 4: thermistor 10K@25C
+#
+record(ai,"CH4:value") {
+  field(DTYP,"ADC channel")
+  field(SCAN,"1 second")
+  field(INP,"@4")
+  field(FLNK,"S1:TEMP02")
+  field(MDEL,-1)
+}
+
+record(calc,"S1:TEMP02") {
+  field(INPA,"CH4:value")
+  field(CALC,"A / 1024")
+  field(EGU,"degC")
+  field(HOPR,150)
+  field(LOPR,-55)
+  field(HIGH,45)
+  field(LOW,15)
+  field(HIHI,115)
+  field(LOLO,-35)
+  field(MDEL,-1)
+}
+
+#
+# CHANNEL 6: thermistor 10K@25C
+#
+record(ai,"CH6:value") {
+  field(DTYP,"ADC channel")
+  field(SCAN,"1 second")
+  field(INP,"@6")
+  field(FLNK,"S1:TEMP03")
+  field(MDEL,-1)
+}
+
+record(calc,"S1:TEMP03") {
+  field(INPA,"CH6:value")
+  field(CALC,"A / 1024")
+  field(EGU,"degC")
+  field(HOPR,150)
+  field(LOPR,-55)
+  field(HIGH,45)
+  field(LOW,15)
+  field(HIHI,115)
+  field(LOLO,-35)
+  field(MDEL,-1)
+}
+
+#
+# CHANNEL 7: direct ADC
+#
+record(ai,"CH7:value") {
+  field(DTYP,"ADC channel")
+  field(SCAN,"1 second")
+  field(INP,"@7")
+  field(FLNK,"CH7:VOLT")
+  field(MDEL,-1)
+}
+
+record(calc,"CH7:VOLT") {
+  field(INPA,"CH7:value")
+  field(CALC,"A / 2^21")
+  field(EGU,"V")
+  field(HOPR,2.5)
+  field(LOPR,0)
+  field(FLNK,"S1:RH")
+  field(MDEL,-1)
+}
+
+record(calc,"S1:RH") {
+  field(INPA,"CH7:VOLT")
+  field(CALC,"A / 2.5 * 100")
+  field(EGU,"%RH")
+  field(HOPR,100)
+  field(LOPR,0)
+  field(MDEL,-1)
+} 
+
+#
+# CHANNEL 8: diode
+#
+record(ai,"CH8:value") {
+  field(DTYP,"ADC channel")
+  field(SCAN,"2 second")
+  field(INP,"@8")
+  field(FLNK,"S1:DIODE")
+  field(MDEL,-1)
+}
+
+record(calc,"S1:DIODE") {
+  field(INPA,"CH8:value")
+  field(CALC,"A / 1024")
+  field(EGU,"degC")
+  field(HOPR,150)
+  field(LOPR,-55)
+  field(HIGH,45)
+  field(LOW,15)
+  field(HIHI,115)
+  field(LOLO,-35)
+  field(MDEL,-1)
+}
+
+#
+# CHANNEL 13: diode
+#
+record(ai,"CH13:value") {
+  field(DTYP,"ADC channel")
+  field(SCAN,"2 second")
+  field(INP,"@13")
+  field(FLNK,"S2:DIODE")
+  field(MDEL,-1)
+}
+
+record(calc,"S2:DIODE") {
+  field(INPA,"CH13:value")
+  field(CALC,"A / 1024")
+  field(EGU,"degC")
+  field(HOPR,150)
+  field(LOPR,-55)
+  field(HIGH,45)
+  field(LOW,15)
+  field(HIHI,115)
+  field(LOLO,-35)
+  field(MDEL,-1)
+}
+
+#
+# CHANNEL 14: direct ADC
+#
+record(ai,"CH14:value") {
+  field(DTYP,"ADC channel")
+  field(SCAN,"1 second")
+  field(INP,"@14")
+  field(FLNK,"CH14:VOLT")
+  field(MDEL,-1)
+}
+
+record(calc,"CH14:VOLT") {
+  field(INPA,"CH14:value")
+  field(CALC,"A / 2^21")
+  field(EGU,"V")
+  field(HOPR,2.5)
+  field(LOPR,0)
+  field(FLNK,"S2:TEMP")
+  field(MDEL,-1)
+}
+
+record(calc,"S2:TEMP") {
+  field(INPA,"CH14:VOLT")
+  field(CALC,"(A / 2.5 * 100) - 40")
+  field(EGU,"degC")
+  field(HOPR,60)
+  field(LOPR,-40)
+  field(MDEL,-1)
+}
+
+#
+# CHANNEL 16: thermistor 10K@25C
+#
+record(ai,"CH16:value") {
+  field(DTYP,"ADC channel")
+  field(SCAN,"1 second")
+  field(INP,"@16")
+  field(FLNK,"S2:TEMP01")
+  field(MDEL,-1)
+}
+
+record(calc,"S2:TEMP01") {
+  field(INPA,"CH16:value")
+  field(CALC,"A / 1024")
+  field(EGU,"degC")
+  field(HOPR,150)
+  field(LOPR,-55)
+  field(HIGH,45)
+  field(LOW,15)
+  field(HIHI,115)
+  field(LOLO,-35)
+  field(MDEL,-1)
+}
+
+#
+# CHANNEL 18: thermistor 10K@25C
+#
+record(ai,"CH18:value") {
+  field(DTYP,"ADC channel")
+  field(SCAN,"1 second")
+  field(INP,"@18")
+  field(FLNK,"S2:TEMP02")
+  field(MDEL,-1)
+}
+
+record(calc,"S2:TEMP02") {
+  field(INPA,"CH18:value")
+  field(CALC,"A / 1024")
+  field(EGU,"degC")
+  field(HOPR,150)
+  field(LOPR,-55)
+  field(HIGH,45)
+  field(LOW,15)
+  field(HIHI,115)
+  field(LOLO,-35)
+  field(MDEL,-1)
+}
+
+#
+# CHANNEL 20: thermistor 10K@25C
+#
+record(ai,"CH20:value") {
+  field(DTYP,"ADC channel")
+  field(SCAN,"1 second")
+  field(INP,"@20")
+  field(FLNK,"S2:TEMP03")
+  field(MDEL,-1)
+}
+
+record(calc,"S2:TEMP03") {
+  field(INPA,"CH20:value")
+  field(CALC,"A / 1024")
+  field(EGU,"degC")
+  field(HOPR,150)
+  field(LOPR,-55)
+  field(HIGH,45)
+  field(LOW,15)
+  field(HIHI,115)
+  field(LOLO,-35)
+  field(MDEL,-1)
+}
