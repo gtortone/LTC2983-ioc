@@ -139,34 +139,45 @@ static long init_device(int phase) {
       LTC_ch_add(7);
 
       // Channel 8: assign off-chip DIODE
+      double diode_ideality_factor1 = 1.760299892426; 
+      const double two_to_20 = 1024.0 * 1024.0; 
       chdata = (uint32_t) SENSOR_TYPE__OFF_CHIP_DIODE |
            (uint32_t) DIODE_SINGLE_ENDED |
            (uint32_t) DIODE_NUM_READINGS__3 |
            (uint32_t) DIODE_AVERAGING_OFF |
            (uint32_t) DIODE_CURRENT__20UA_80UA_160UA |
-           (uint32_t) (0b0111000101111000110000<< DIODE_IDEALITY_FACTOR_LSB);
+           (uint32_t) ((uint32_t) (diode_ideality_factor1 * two_to_20)) << DIODE_IDEALITY_FACTOR_LSB;
       LTC_ch_config(8,chdata);
       LTC_ch_add(8);
+      printf("Diode_ideality_factor1 = %f\n", (chdata & 0x003FFFFF) / two_to_20 );
 
       // Channel 10: assign Sense Resistor
+      //  SENSE_RESISTOR_VALUE_LSB = 0
+      float Rsense1 = 10000.0; //ohm
+      const float two_to_10 = 1024.0;
       chdata = (uint32_t) SENSOR_TYPE__SENSE_RESISTOR |
-           (uint32_t) 0b000100111000100000000000000 << SENSE_RESISTOR_VALUE_LSB;           // sense resistor - value: 10000.
+           (uint32_t) ((uint32_t) (Rsense1 * two_to_10)) << SENSE_RESISTOR_VALUE_LSB;          
       LTC_ch_config(10, chdata);
+      printf("R_sense_sector1 = %f ohm\n", (chdata & 0x07FFFFFF) / two_to_10 );
 
       // Channel 12: assign Sense Resistor
+      float Rsense2 = 10000.0; //ohm
       chdata = (uint32_t) SENSOR_TYPE__SENSE_RESISTOR |
-           (uint32_t) 0b000100111000100000000000000 << SENSE_RESISTOR_VALUE_LSB;           // sense resistor - value: 10000.
+           (uint32_t) ((uint32_t) (Rsense2 * two_to_10)) << SENSE_RESISTOR_VALUE_LSB;           
       LTC_ch_config(12, chdata);
+      printf("R_sense_sector2 = %f ohm\n", (chdata & 0x07FFFFFF) / two_to_10 );
 
       // Channel 13: assign off-chip DIODE
+      double diode_ideality_factor2 = 1.76299892426; 
       chdata = (uint32_t) SENSOR_TYPE__OFF_CHIP_DIODE |
            (uint32_t) DIODE_SINGLE_ENDED |
            (uint32_t) DIODE_NUM_READINGS__3 |
            (uint32_t) DIODE_AVERAGING_OFF |
            (uint32_t) DIODE_CURRENT__20UA_80UA_160UA |
-           (uint32_t) (0b0111000101111000110000<< DIODE_IDEALITY_FACTOR_LSB);
+           (uint32_t) ((uint32_t) (diode_ideality_factor2 * two_to_20)) << DIODE_IDEALITY_FACTOR_LSB;
       LTC_ch_config(13,chdata);
       LTC_ch_add(13);
+      printf("Diode_ideality_factor2 = %f\n", (chdata & 0x003FFFFF) / two_to_20 );
 
       // Channel 14: assign Direct ADC
       chdata = (uint32_t) SENSOR_TYPE__DIRECT_ADC |
@@ -240,6 +251,11 @@ static long read_ai(aiRecord *prec) {
    epicsMutexUnlock(mutex);
 
    prec->rval = LTC_raw_to_signed(raw_value);
+
+   // rg added this
+   uint8_t regval;
+   LTC_reg_read(0x00,regval);
+   printf("LTC2983 DEBUG INFO: Cmmand Status Register (A=0x00) value = 0x%x\n", regval);
 
    return(0);
 }

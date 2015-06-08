@@ -4,7 +4,7 @@
 static int fd;
 static uint32_t mode = SPI_MODE_0;           // CPOL = 0 - CPHA = 0
 static uint8_t bits = 8;
-static uint32_t speed = 2000000;             // 2 MHz
+static uint32_t speed = 1000000;             // rg set 1 MHz, was 2 MHz
 static uint16_t delay = 0;
 
 bool LTC_SPI_init(uint8_t bus, uint8_t cs) {
