@@ -24,7 +24,7 @@ LTC2983_DBD += LTC2983dev.dbd
 # LTC2983_registerRecordDeviceDriver.cpp derives from LTC2983.dbd
 LTC2983_SRCS += LTC2983_registerRecordDeviceDriver.cpp
 LTC2983_SRCS += devLTC2983.cpp spiLTC2983.cpp
-USR_CXXFLAGS += -fpermissive
+USR_CXXFLAGS += -fpermissive -O2
 
 # Build the main IOC entry point on workstation OSs.
 LTC2983_SRCS_DEFAULT += LTC2983Main.cpp

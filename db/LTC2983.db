@@ -86,7 +86,7 @@ record(calc,"CH7:VOLT") {
   field(INPA,"CH7:value")
   field(CALC,"A / 2^21")
   field(EGU,"V")
-  field(HOPR,2.5)
+  field(HOPR,1)
   field(LOPR,0)
   field(FLNK,"S1:RH")
   field(MDEL,-1)
@@ -94,7 +94,7 @@ record(calc,"CH7:VOLT") {
 
 record(calc,"S1:RH") {
   field(INPA,"CH7:VOLT")
-  field(CALC,"A / 2.5 * 100")
+  field(CALC,"A * 100")
   field(EGU,"%")
   field(HOPR,100)
   field(LOPR,0)
@@ -253,7 +253,7 @@ record(calc,"CH14:VOLT") {
   field(INPA,"CH14:value")
   field(CALC,"A / 2^21")
   field(EGU,"V")
-  field(HOPR,2.5)
+  field(HOPR,1)
   field(LOPR,0)
   field(FLNK,"S2:RH")
   field(MDEL,-1)
@@ -261,7 +261,7 @@ record(calc,"CH14:VOLT") {
 
 record(calc,"S2:RH") {
   field(INPA,"CH14:VOLT")
-  field(CALC,"(A / 2.5 * 100)")
+  field(CALC,"(A * 100)")
   field(EGU,"%")
   field(HOPR,100)
   field(LOPR,0)
