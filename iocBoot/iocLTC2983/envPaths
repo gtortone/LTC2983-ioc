@@ -1,0 +1,4 @@
+epicsEnvSet("ARCH","linux-arm")
+epicsEnvSet("IOC","iocLTC2983")
+epicsEnvSet("TOP","/opt/LTC2983-ioc")
+epicsEnvSet("EPICS_BASE","/opt/epics/base")

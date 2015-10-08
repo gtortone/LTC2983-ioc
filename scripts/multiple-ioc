@@ -1,0 +1,29 @@
+#!/bin/sh -e
+# Called when an interface goes up / down
+
+# Author: Ralph Lange <Ralph.Lange@gmx.de>
+
+# Make any incoming Channel Access name resolution queries go to the broadcast address
+# (to hit all IOCs on this host)
+
+# Change this if you run CA on a non-standard port
+PORT=5064
+
+[ "$METHOD" != "none" ] || exit 0
+[ "$IFACE" != "lo" ] || exit 0
+
+line=`ifconfig $IFACE | grep "inet addr"`
+addr=`echo $line | sed -e 's/.*inet addr:\([0-9\.]*\).*/\1/'`
+bcast=`echo $line | sed -e 's/.*Bcast:\([0-9\.]*\).*/\1/'`
+
+[ -z "$addr" -o -z "$bcast" ] && return 1
+
+if [ "$MODE" = "start" ]
+then
+    iptables -t nat -A PREROUTING -d $addr -p udp --dport $PORT -j DNAT --to-destination $bcast
+elif [ "$MODE" = "stop" ]
+then
+    iptables -t nat -D PREROUTING -d $addr -p udp --dport $PORT -j DNAT --to-destination $bcast
+fi
+
+exit 0

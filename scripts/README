@@ -1,3 +1,6 @@
 To enable LTC2983-ioc at boot copy startup script
 to /etc/init.d and create a symbolic link /etc/rc2.d/S18epics-LTC2983.
 Run "update-rc.d epics-LTC2983 defaults" in order to enable it.
+
+In order to run multiple IOCs copy the script multiple-ioc
+in /etc/network/if-up.d and /etc/network/if-down.d

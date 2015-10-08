@@ -9,7 +9,8 @@ case "$1" in
     export EPICS_HOST_ARCH=linux-arm
     export LD_LIBRARY_PATH=/opt/epics/base/lib/linux-arm
     cd /opt/LTC2983-ioc/iocBoot/iocLTC2983
-    screen -d -m -S ioc /opt/LTC2983-ioc/bin/linux-arm/LTC2983 st.cmd
+    screen -d -m -S ioc /opt/LTC2983-ioc/bin/linux-arm/LTC2983 ioc-spi01.cmd
+    screen -d -m -S ioc /opt/LTC2983-ioc/bin/linux-arm/LTC2983 ioc-spi02.cmd
     echo "."
     ;;
   stop)

@@ -9,10 +9,14 @@ dbLoadDatabase "dbd/LTC2983.dbd"
 LTC2983_registerRecordDeviceDriver pdbbase
 
 ## configure module SPI bus number, SPI chip select
-devLTC2983config(1, 0)
+## bus number 1 = /dev/spidev1.[cs]
+## bus number 2 = /dev/spidev2.[cs]
+devLTC2983config(2, 0)
 
 ## Load record instances
-dbLoadRecords("db/sector-7F.db")
+## SNAME - sector name of ECL (e.g. S1F, S8B) F = forward , B = backward
+dbLoadRecords("db/sector-A.db","SNAME=3")
+dbLoadRecords("db/sector-B.db","SNAME=4")
 
 cd ${TOP}/iocBoot/${IOC}
 iocInit

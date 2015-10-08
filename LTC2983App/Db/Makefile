@@ -11,7 +11,7 @@ include $(TOP)/configure/CONFIG
 # Create and install (or just install) into <top>/db
 # databases, templates, substitutions like this
 #DB += LTC2983.db
-DB += sector-7F.db sector-8F.db
+DB += sector-A.db sector-B.db
 
 #----------------------------------------------------
 # If <anyname>.db template is not named <anyname>*.template add

@@ -1,16 +1,16 @@
 #
 # CHANNEL 13: diode
 #
-record(ai,"CH13:value") {
+record(ai,"$(SNAME):CH13:value") {
   field(DTYP,"ADC channel")
   field(SCAN,"5 second")
   field(INP,"@13")
-  field(FLNK,"S8F:DIODE")
+  field(FLNK,"$(SNAME):DIODE")
   field(MDEL,-1)
 }
 
-record(calc,"S8F:DIODE") {
-  field(INPA,"CH13:value")
+record(calc,"$(SNAME):DIODE") {
+  field(INPA,"$(SNAME):CH13:value")
   field(CALC,"A / 1024")
   field(EGU,"degC")
   field(HOPR,150)
@@ -25,26 +25,26 @@ record(calc,"S8F:DIODE") {
 #
 # CHANNEL 14: direct ADC
 #
-record(ai,"CH14:value") {
+record(ai,"$(SNAME):CH14:value") {
   field(DTYP,"ADC channel")
   field(SCAN,"5 second")
   field(INP,"@14")
-  field(FLNK,"CH14:VOLT")
+  field(FLNK,"$(SNAME):CH14:VOLT")
   field(MDEL,-1)
 }
 
-record(calc,"CH14:VOLT") {
-  field(INPA,"CH14:value")
+record(calc,"$(SNAME):CH14:VOLT") {
+  field(INPA,"$(SNAME):CH14:value")
   field(CALC,"A / 2^21")
   field(EGU,"V")
   field(HOPR,1)
   field(LOPR,0)
-  field(FLNK,"S8F:RH")
+  field(FLNK,"$(SNAME):RH")
   field(MDEL,-1)
 }
 
-record(calc,"S8F:RH") {
-  field(INPA,"CH14:VOLT")
+record(calc,"$(SNAME):RH") {
+  field(INPA,"$(SNAME):CH14:VOLT")
   field(CALC,"(A * 100)")
   field(EGU,"%")
   field(HOPR,100)
@@ -55,16 +55,16 @@ record(calc,"S8F:RH") {
 #
 # CHANNEL 16: thermistor 10K@25C
 #
-record(ai,"CH16:value") {
+record(ai,"$(SNAME):CH16:value") {
   field(DTYP,"ADC channel")
   field(SCAN,"5 second")
   field(INP,"@16")
-  field(FLNK,"S8F:TEMP01")
+  field(FLNK,"$(SNAME):TEMP01")
   field(MDEL,-1)
 }
 
-record(calc,"S8F:TEMP01") {
-  field(INPA,"CH16:value")
+record(calc,"$(SNAME):TEMP01") {
+  field(INPA,"$(SNAME):CH16:value")
   field(CALC,"A / 1024")
   field(EGU,"degC")
   field(HOPR,150)
@@ -79,16 +79,16 @@ record(calc,"S8F:TEMP01") {
 #
 # CHANNEL 18: thermistor 10K@25C
 #
-record(ai,"CH18:value") {
+record(ai,"$(SNAME):CH18:value") {
   field(DTYP,"ADC channel")
   field(SCAN,"5 second")
   field(INP,"@18")
-  field(FLNK,"S8F:TEMP02")
+  field(FLNK,"$(SNAME):TEMP02")
   field(MDEL,-1)
 }
 
-record(calc,"S8F:TEMP02") {
-  field(INPA,"CH18:value")
+record(calc,"$(SNAME):TEMP02") {
+  field(INPA,"$(SNAME):CH18:value")
   field(CALC,"A / 1024")
   field(EGU,"degC")
   field(HOPR,150)
@@ -103,16 +103,16 @@ record(calc,"S8F:TEMP02") {
 #
 # CHANNEL 20: thermistor 10K@25C
 #
-record(ai,"CH20:value") {
+record(ai,"$(SNAME):CH20:value") {
   field(DTYP,"ADC channel")
   field(SCAN,"5 second")
   field(INP,"@20")
-  field(FLNK,"S8F:TEMP03")
+  field(FLNK,"$(SNAME):TEMP03")
   field(MDEL,-1)
 }
 
-record(calc,"S8F:TEMP03") {
-  field(INPA,"CH20:value")
+record(calc,"$(SNAME):TEMP03") {
+  field(INPA,"$(SNAME):CH20:value")
   field(CALC,"A / 1024")
   field(EGU,"degC")
   field(HOPR,150)
