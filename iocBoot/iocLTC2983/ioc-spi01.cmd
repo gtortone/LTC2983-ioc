@@ -18,11 +18,19 @@ save_restoreSet_NumSeqFiles(0)
 save_restoreSet_DatedBackupFiles(0)
 
 ## set here sector names to monitor
+## BEAST config
+## epicsEnvSet("SNAME_A","BOX1")
+## epicsEnvSet("SNAME_B","BOX2")
+## epicsEnvSet("LABEL_01","CSITL")
+## epicsEnvSet("LABEL_02","CSIPURE")
+## epicsEnvSet("LABEL_03","LYSO")
+
+## ECL generic config
 epicsEnvSet("SNAME_A","1")
 epicsEnvSet("SNAME_B","2")
-epicsEnvSet("TLABEL_01","TEMP01")
-epicsEnvSet("TLABEL_02","TEMP02")
-epicsEnvSet("TLABEL_03","TEMP03")
+epicsEnvSet("LABEL_01","TEMP01")
+epicsEnvSet("LABEL_02","TEMP02")
+epicsEnvSet("LABEL_03","TEMP03")
 
 ## configure module SPI bus number, SPI chip select
 ## bus number 1 = /dev/spidev1.[cs]	uSOP label = JSPI0
@@ -31,8 +39,8 @@ devLTC2983config(1, 0)
 
 ## Load record instances
 ## SNAME - sector name of ECL (e.g. S1F, S8B) F = forward , B = backward
-dbLoadRecords("db/sector-A.db","SNAME=$(SNAME_A),TEMP01=$(TLABEL_01),TEMP02=$(TLABEL_02),TEMP03=$(TLABEL_03)")
-dbLoadRecords("db/sector-B.db","SNAME=$(SNAME_B),TEMP01=$(TLABEL_01),TEMP02=$(TLABEL_02),TEMP03=$(TLABEL_03)")
+dbLoadRecords("db/sector-A.db","SNAME=$(SNAME_A),LABEL01=$(LABEL_01),LABEL02=$(LABEL_02),LABEL03=$(LABEL_03)")
+dbLoadRecords("db/sector-B.db","SNAME=$(SNAME_B),LABEL01=$(LABEL_01),LABEL02=$(LABEL_02),LABEL03=$(LABEL_03)")
 
 ## IOC access security
 ## asSetFilename("/opt/LTC2983-ioc/iocBoot/iocLTC2983/policy.example")
