@@ -10,6 +10,7 @@ record(ai,"$(SNAME):CH13:value") {
 }
 
 record(calc,"$(SNAME):DIODE") {
+  field(SCAN,"Passive")
   field(INPA,"$(SNAME):CH13:value")
   field(CALC,"A / 1024")
   field(EGU,"degC")
@@ -20,6 +21,21 @@ record(calc,"$(SNAME):DIODE") {
   field(HIHI,115)
   field(LOLO,-35)
   field(MDEL,-1)
+}
+
+# diode ideality factor
+record(ao,"$(SNAME):CH13:if"){
+  field(DTYP,"ADC channel")
+  field(SCAN,"Passive")
+  field(DESC,"diode ideality factor")
+  field(PREC,"9")
+  field(DRVH,"4")
+  field(HOPR,"4")
+  field(VAL,"0")
+  field(LOPR,"0")
+  field(DRVL,"0")
+  field(UDF,"1")
+  field(PINI,"YES")
 }
 
 #
@@ -59,11 +75,11 @@ record(ai,"$(SNAME):CH16:value") {
   field(DTYP,"ADC channel")
   field(SCAN,"5 second")
   field(INP,"@16")
-  field(FLNK,"$(SNAME):TEMP01")
+  field(FLNK,"$(SNAME):$(TEMP01)")
   field(MDEL,-1)
 }
 
-record(calc,"$(SNAME):TEMP01") {
+record(calc,"$(SNAME):$(TEMP01)") {
   field(INPA,"$(SNAME):CH16:value")
   field(CALC,"A / 1024")
   field(EGU,"degC")
@@ -83,11 +99,11 @@ record(ai,"$(SNAME):CH18:value") {
   field(DTYP,"ADC channel")
   field(SCAN,"5 second")
   field(INP,"@18")
-  field(FLNK,"$(SNAME):TEMP02")
+  field(FLNK,"$(SNAME):$(TEMP02)")
   field(MDEL,-1)
 }
 
-record(calc,"$(SNAME):TEMP02") {
+record(calc,"$(SNAME):$(TEMP02)") {
   field(INPA,"$(SNAME):CH18:value")
   field(CALC,"A / 1024")
   field(EGU,"degC")
@@ -107,11 +123,11 @@ record(ai,"$(SNAME):CH20:value") {
   field(DTYP,"ADC channel")
   field(SCAN,"5 second")
   field(INP,"@20")
-  field(FLNK,"$(SNAME):TEMP03")
+  field(FLNK,"$(SNAME):$(TEMP03)")
   field(MDEL,-1)
 }
 
-record(calc,"$(SNAME):TEMP03") {
+record(calc,"$(SNAME):$(TEMP03)") {
   field(INPA,"$(SNAME):CH20:value")
   field(CALC,"A / 1024")
   field(EGU,"degC")

@@ -1,2 +1,3 @@
 device(ai,INST_IO,devAiLTC2983,"ADC channel")
+device(ao,INST_IO,devAoLTC2983,"ADC channel")
 registrar(devLTC2983Registrar)

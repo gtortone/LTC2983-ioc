@@ -5,11 +5,11 @@ record(ai,"$(SNAME):CH2:value") {
   field(DTYP,"ADC channel")
   field(SCAN,"5 second")
   field(INP,"@2")
-  field(FLNK,"$(SNAME):TEMP01")
+  field(FLNK,"$(SNAME):$(TEMP01)")
   field(MDEL,-1)
 }
 
-record(calc,"$(SNAME):TEMP01") {
+record(calc,"$(SNAME):$(TEMP01)") {
   field(INPA,"$(SNAME):CH2:value")
   field(CALC,"A / 1024")
   field(EGU,"degC")
@@ -30,11 +30,11 @@ record(ai,"$(SNAME):CH4:value") {
   field(DTYP,"ADC channel")
   field(SCAN,"5 second")
   field(INP,"@4")
-  field(FLNK,"$(SNAME):TEMP02")
+  field(FLNK,"$(SNAME):$(TEMP02)")
   field(MDEL,-1)
 }
 
-record(calc,"$(SNAME):TEMP02") {
+record(calc,"$(SNAME):$(TEMP02)") {
   field(INPA,"$(SNAME):CH4:value")
   field(CALC,"A / 1024")
   field(EGU,"degC")
@@ -54,11 +54,11 @@ record(ai,"$(SNAME):CH6:value") {
   field(DTYP,"ADC channel")
   field(SCAN,"5 second")
   field(INP,"@6")
-  field(FLNK,"$(SNAME):TEMP03")
+  field(FLNK,"$(SNAME):$(TEMP03)")
   field(MDEL,-1)
 }
 
-record(calc,"$(SNAME):TEMP03") {
+record(calc,"$(SNAME):$(TEMP03)") {
   field(INPA,"$(SNAME):CH6:value")
   field(CALC,"A / 1024")
   field(EGU,"degC")
@@ -116,10 +116,10 @@ record(fanout,"$(SNAME):RH:FANOUT") {
 
 #
 # Dew point calculation is split in $(SNAME):GAMMA and $(SNAME):DEW
-# $(SNAME):TEMP01 
+# $(SNAME):$(TEMP01) 
 #
 record(calc,"$(SNAME):GAMMA01") {
-  field(INPA,"$(SNAME):TEMP01")
+  field(INPA,"$(SNAME):$(TEMP01)")
   field(INPB,"$(SNAME):RH")
   field(CALC,"LOGE(B/100) +(18.678 - A/234.5)*(A / (257.14+A)) ")
   field(FLNK,"$(SNAME):DEW01")
@@ -141,10 +141,10 @@ record(calc,"$(SNAME):DEW01") {
 
 #
 # Dew point calculation is split in $(SNAME):GAMMA and $(SNAME):DEW
-# $(SNAME):TEMP02 
+# $(SNAME):$(TEMP02)
 #
 record(calc,"$(SNAME):GAMMA02") {
-  field(INPA,"$(SNAME):TEMP02")
+  field(INPA,"$(SNAME):$(TEMP02)")
   field(INPB,"$(SNAME):RH")
   field(CALC,"LOGE(B/100) +(18.678 - A/234.5)*(A / (257.14+A)) ")
   field(FLNK,"$(SNAME):DEW02")
@@ -167,10 +167,10 @@ record(calc,"$(SNAME):DEW02") {
 
 #
 # Dew point calculation is split in $(SNAME):GAMMA and $(SNAME):DEW
-# $(SNAME):TEMP03 
+# $(SNAME):$(TEMP03)
 #
 record(calc,"$(SNAME):GAMMA03") {
-  field(INPA,"$(SNAME):TEMP03")
+  field(INPA,"$(SNAME):$(TEMP03)")
   field(INPB,"$(SNAME):RH")
   field(CALC,"LOGE(B/100) +(18.678 - A/234.5)*(A / (257.14+A)) ")
   field(FLNK,"$(SNAME):DEW03")
@@ -202,6 +202,7 @@ record(ai,"$(SNAME):CH8:value") {
 }
 
 record(calc,"$(SNAME):DIODE") {
+  field(SCAN,"Passive")
   field(INPA,"$(SNAME):CH8:value")
   field(CALC,"A / 1024")
   field(EGU,"degC")
@@ -212,4 +213,19 @@ record(calc,"$(SNAME):DIODE") {
   field(HIHI,115)
   field(LOLO,-35)
   field(MDEL,-1)
+}
+
+# diode ideality factor
+record(ao,"$(SNAME):CH8:if"){
+  field(DTYP,"ADC channel")
+  field(SCAN,"Passive")
+  field(DESC,"diode ideality factor")
+  field(PREC,"9")
+  field(DRVH,"4")
+  field(HOPR,"4")
+  field(VAL,"0")
+  field(LOPR,"0")
+  field(DRVL,"0")
+  field(UDF,"1")
+  field(PINI,"YES")
 }

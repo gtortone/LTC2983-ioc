@@ -2,6 +2,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <fcntl.h>
+#include <recSup.h>
 #include <devSup.h>
 #include <recGbl.h>
 #include <alarm.h>
@@ -12,12 +13,17 @@
 #include <epicsMutex.h>
 
 #include <aiRecord.h>
+#include <aoRecord.h>
 #include <iocsh.h>
+#include <string.h>
 #include "spiLTC2983.h"
 
 static long init_device(int phase);
 static long init_ai_record(aiRecord *prec);
 static long read_ai(aiRecord *prec);
+
+static long init_ao_record(aoRecord *prec);
+static long write_ao(aoRecord *prec);
 
 struct busConfig {
 
@@ -46,8 +52,29 @@ struct {
    NULL
 };
 
-// global var for rejection and speed config words
-static uint8_t g_rejection;
+struct {
+
+   long            number;
+   DEVSUPFUN	   report;
+   DEVSUPFUN       init;
+   DEVSUPFUN       init_record;
+   DEVSUPFUN       get_ioint_info;
+   DEVSUPFUN       write_ao;
+   DEVSUPFUN       special_linconv;
+
+} devAoLTC2983 = {
+
+   6,
+   NULL,
+   NULL,
+   init_ao_record,
+   NULL,
+   write_ao,
+   NULL
+};
+
+// global var for diode ideality factor (CH8 and CH13)
+static double ch8_if, ch13_if;
 
 // global vars for SPI bus number, SPI chip select address
 static struct busConfig spibus;
@@ -139,13 +166,12 @@ static long init_device(int phase) {
       LTC_ch_add(7);
 
       // Channel 8: assign off-chip DIODE
-      const double two_to_20 = 1024.0 * 1024.0; 
       chdata = (uint32_t) SENSOR_TYPE__OFF_CHIP_DIODE |
            (uint32_t) DIODE_SINGLE_ENDED |
            (uint32_t) DIODE_NUM_READINGS__3 |
-           (uint32_t) DIODE_AVERAGING_OFF |
-           (uint32_t) DIODE_CURRENT__20UA_80UA_160UA |
-           (uint32_t) (0b11100110010111000100000110001001 << DIODE_IDEALITY_FACTOR_LSB);
+           (uint32_t) DIODE_AVERAGING_ON |
+           (uint32_t) DIODE_CURRENT__20UA_80UA_160UA | (uint32_t) (1048576 * ch8_if);		// default value: 1.003
+           //(uint32_t) (0b11100110010111000100000110001001 << DIODE_IDEALITY_FACTOR_LSB);
       LTC_ch_config(8,chdata);
       LTC_ch_add(8);
 
@@ -169,9 +195,9 @@ static long init_device(int phase) {
       chdata = (uint32_t) SENSOR_TYPE__OFF_CHIP_DIODE |
            (uint32_t) DIODE_SINGLE_ENDED |
            (uint32_t) DIODE_NUM_READINGS__3 |
-           (uint32_t) DIODE_AVERAGING_OFF |
-           (uint32_t) DIODE_CURRENT__20UA_80UA_160UA |
-           (uint32_t) (0b11100110010110111101011100001010 << DIODE_IDEALITY_FACTOR_LSB);
+           (uint32_t) DIODE_AVERAGING_ON |
+           (uint32_t) DIODE_CURRENT__20UA_80UA_160UA | (uint32_t) (1048576 * ch13_if);		// default value: 1.003
+           //(uint32_t) (0b11100110010110111101011100001010 << DIODE_IDEALITY_FACTOR_LSB);
       LTC_ch_config(13,chdata);
       LTC_ch_add(13);
 
@@ -248,12 +274,63 @@ static long read_ai(aiRecord *prec) {
 
    prec->rval = LTC_raw_to_signed(raw_value);
 
-   // rg added this
-   //uint8_t regval;
-   //LTC_reg_read(0x00,regval);
-   //printf("LTC2983 DEBUG INFO: Cmmand Status Register (A=0x00) value = 0x%x\n", regval);
+   return(0);
+}
+
+static long init_ao_record(aoRecord *prec) {
+
+//   prec->udf = FALSE;
+   return(0);
+}
+
+static long write_ao(aoRecord *prec) {
+
+   int retval;
+   char param[16];
+   uint32_t chdata;
+
+   retval = sscanf(prec->name, "%*[^:]:%s", param); 
+
+   if(retval != 1) {
+
+      errlogPrintf("ERROR: field name not correct\n");      
+      prec->udf = TRUE;
+      return(S_db_badField);
+   }
+
+   prec->udf = FALSE;
+
+   if(strcasecmp(param, (char *) "CH8:if") == 0) {
+
+      ch8_if = prec->val;
+
+      epicsMutexLock(mutex);
+         // Channel 8: assign off-chip DIODE
+         chdata = (uint32_t) SENSOR_TYPE__OFF_CHIP_DIODE |
+              (uint32_t) DIODE_SINGLE_ENDED |
+              (uint32_t) DIODE_NUM_READINGS__3 |
+              (uint32_t) DIODE_AVERAGING_ON |
+              (uint32_t) DIODE_CURRENT__20UA_80UA_160UA | (uint32_t) (1048576 * ch8_if);
+         LTC_ch_config(8,chdata);
+      epicsMutexUnlock(mutex);
+
+   } else if(strcasecmp(param, (char *) "CH13:if") == 0) {
+
+      ch13_if = prec->val;
+
+      epicsMutexLock(mutex);
+         // Channel 13: assign off-chip DIODE
+         chdata = (uint32_t) SENSOR_TYPE__OFF_CHIP_DIODE |
+              (uint32_t) DIODE_SINGLE_ENDED |
+              (uint32_t) DIODE_NUM_READINGS__3 |
+              (uint32_t) DIODE_AVERAGING_ON |
+              (uint32_t) DIODE_CURRENT__20UA_80UA_160UA | (uint32_t) (1048576 * ch13_if);
+         LTC_ch_config(13,chdata);
+      epicsMutexUnlock(mutex);
+   }
 
    return(0);
 }
 
 epicsExportAddress(dset,devAiLTC2983);
+epicsExportAddress(dset,devAoLTC2983);

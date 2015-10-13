@@ -17,9 +17,10 @@ LTC2983_DBD += base.dbd
 
 # Include dbd files from all support applications:
 LTC2983_DBD += LTC2983dev.dbd
+LTC2983_DBD += asSupport.dbd
 
 # Add all the support libraries needed by this IOC
-#LTC2983_LIBS += xxx
+LTC2983_LIBS += autosave
 
 # LTC2983_registerRecordDeviceDriver.cpp derives from LTC2983.dbd
 LTC2983_SRCS += LTC2983_registerRecordDeviceDriver.cpp

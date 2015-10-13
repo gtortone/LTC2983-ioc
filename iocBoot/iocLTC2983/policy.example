@@ -1,0 +1,9 @@
+UAG(uag) {tortone}
+HAG(hag) {nblupo}
+ASG(DEFAULT) {
+    RULE(1,READ)
+    RULE(1,WRITE) {
+        UAG(uag)
+        HAG(hag)
+    }
+}
