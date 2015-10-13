@@ -46,7 +46,7 @@ cd ${TOP}/iocBoot/${IOC}
 iocInit
 
 create_triggered_set("pv-spi02-a.req","$(SNAME_A):CH8:if","SNAME=$(SNAME_A)")
-## create_triggered_set("pv-spi02-b.req","$(SNAME_B):CH13:if","SNAME=$(SNAME_B)")
+create_triggered_set("pv-spi02-b.req","$(SNAME_B):CH13:if","SNAME=$(SNAME_B)")
 
 ## create_monitor_set("pv-spi02.req",30,"SNAME=$(SNAME_A)")
 
