@@ -1,0 +1,22 @@
+LTC2983 IOC PV list
+-------------------
+
+- sector temperature in degC
+
+<sector>:TEMP:<label01>
+<sector>:TEMP:<label02>
+<sector>:TEMP:<label03>
+
+- sector relative humidity in percent
+
+<sector>:RH
+
+- sector dew point in degC
+
+<sector>:DEW:<label01> 
+<sector>:DEW:<label02> 
+<sector>:DEW:<label03> 
+
+- board temperature in degC from local diode
+
+<sector>:DIODE
