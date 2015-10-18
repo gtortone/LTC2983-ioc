@@ -13,7 +13,7 @@ save_restoreSet_Debug(0)
 set_savefile_path("autosave", "");
 set_requestfile_path("autosave", "")
 set_pass1_restoreFile("pv-spi02-a.sav")
-## set_pass1_restoreFile("pv-spi02-b.sav")
+set_pass1_restoreFile("pv-spi02-b.sav")
 save_restoreSet_NumSeqFiles(0)
 save_restoreSet_DatedBackupFiles(0)
 
