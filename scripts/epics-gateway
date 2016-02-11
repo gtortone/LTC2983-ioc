@@ -1,0 +1,32 @@
+# Start epics PV gateway
+
+PATH=/bin:/usr/bin:/sbin:/usr/sbin:/usr/local/bin:/opt/epics/base/bin/linux-arm
+
+#`modify -cip option and -sip option to local machine configuration
+
+case "$1" in
+  start)
+    echo -n "Starting EPICS PV gateway"
+    export EPICS_HOST_ARCH=linux-arm
+    export LD_LIBRARY_PATH=/opt/epics/base/lib/linux-arm
+    # start PV Gateway
+    gateway -cip "192.168.100.62 192.168.200.62" -sip 192.168.20.62 -archive -no_cache -cport 6064 -sport 5064 -server -home /opt/epics/base/bin/linux-arm
+    echo "."
+    ;;
+  stop)
+    echo -n "Stopping EPICS PV gateway"
+    # stop PV Gateway
+    gateway.killer
+    unset EPICS_HOST_ARCH
+    echo "."
+    ;;
+  force-reload|restart)
+    sh $0 stop
+    sh $0 start
+    ;;
+  *)
+    echo "Usage: /etc/init.d/epics-gateway {start|stop|restart|force-reload}"
+    exit 1
+    ;;
+esac
+
