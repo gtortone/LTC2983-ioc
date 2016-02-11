@@ -8,8 +8,14 @@ case "$1" in
     echo -n "Starting LTC2983-ioc"
     export EPICS_HOST_ARCH=linux-arm
     export LD_LIBRARY_PATH=/opt/epics/base/lib/linux-arm
+    # use these env variables to bind the IOC on a specific network interface to use with EPICS PV gateway
+    #export EPICS_CAS_INTF_ADDR_LIST="192.168.100.62"   
+    #export EPICS_CAS_SERVER_PORT="6064"
     cd /opt/LTC2983-ioc/iocBoot/iocLTC2983
     screen -d -m -S ioc /opt/LTC2983-ioc/bin/linux-arm/LTC2983 ioc-spi01.cmd
+    # use these env variables to bind the IOC on a specific network interface to use with EPICS PV gateway
+    #export EPICS_CAS_INTF_ADDR_LIST="192.168.200.62"   
+    #export EPICS_CAS_SERVER_PORT="6064"
     screen -d -m -S ioc /opt/LTC2983-ioc/bin/linux-arm/LTC2983 ioc-spi02.cmd
     echo "."
     ;;
