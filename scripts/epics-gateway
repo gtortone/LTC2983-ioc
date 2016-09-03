@@ -2,7 +2,9 @@
 
 PATH=/bin:/usr/bin:/sbin:/usr/sbin:/usr/local/bin:/opt/epics/base/bin/linux-arm
 
-#`modify -cip option and -sip option to local machine configuration
+dev_eth0=`/sbin/ifconfig eth0 | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}'`
+dev_eth0_1=`/sbin/ifconfig eth0:1 | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}'`
+dev_eth0_2=`/sbin/ifconfig eth0:2 | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}'`
 
 case "$1" in
   start)
@@ -10,7 +12,7 @@ case "$1" in
     export EPICS_HOST_ARCH=linux-arm
     export LD_LIBRARY_PATH=/opt/epics/base/lib/linux-arm
     # start PV Gateway
-    gateway -cip "192.168.100.62 192.168.200.62" -sip 192.168.20.62 -archive -no_cache -cport 6064 -sport 5064 -server -home /opt/epics/base/bin/linux-arm
+    gateway -cip "$dev_eth0_1 $dev_eth0_2" -sip $dev_eth0 -archive -no_cache -cport 6064 -sport 5064 -server -home /opt/epics/base/bin/linux-arm
     echo "."
     ;;
   stop)
