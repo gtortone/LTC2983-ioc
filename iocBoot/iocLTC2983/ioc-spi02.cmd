@@ -17,20 +17,21 @@ set_pass1_restoreFile("pv-spi02-b.sav")
 save_restoreSet_NumSeqFiles(0)
 save_restoreSet_DatedBackupFiles(0)
 
-## set here sector names to monitor
-## BEAST config
-## epicsEnvSet("SNAME_A","BOX3")
-## epicsEnvSet("SNAME_B","4")
-## epicsEnvSet("LABEL_01","CSITL")
-## epicsEnvSet("LABEL_02","CSIPURE")
-## epicsEnvSet("LABEL_03","LYSO")
-
-## ECL generic config
+## sectors name config
+# BEGIN ANSIBLE MANAGED BLOCK
 epicsEnvSet("SNAME_A","3")
 epicsEnvSet("SNAME_B","4")
+# END ANSIBLE MANAGED BLOCK
+
+## ECL generic config
 epicsEnvSet("LABEL_01","TEMP01")
 epicsEnvSet("LABEL_02","TEMP02")
 epicsEnvSet("LABEL_03","TEMP03")
+
+## BEAST config
+## epicsEnvSet("LABEL_01","CSITL")
+## epicsEnvSet("LABEL_02","CSIPURE")
+## epicsEnvSet("LABEL_03","LYSO")
 
 ## configure module SPI bus number, SPI chip select
 ## bus number 1 = /dev/spidev1.[cs]     uSOP label = JSPI0
