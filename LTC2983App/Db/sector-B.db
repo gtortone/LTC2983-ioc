@@ -56,6 +56,10 @@ record(calc,"$(SNAME):RH") {
   field(HIGH,10)
   field(LOW,5)
   field(LOLO,2)
+  field(HHSV, "MAJOR")
+  field(HSV, "MINOR")
+  field(LSV, "MINOR")
+  field(LLSV, "MAJOR")
   field(MDEL,-1)
 }
 
@@ -78,6 +82,10 @@ record(calc,"$(SNAME):TEMP:$(LABEL01)") {
   field(HIGH,28)
   field(LOW,18)
   field(LOLO,12)
+  field(HHSV, "MAJOR")
+  field(HSV, "MINOR")
+  field(LSV, "MINOR")
+  field(LLSV, "MAJOR")
   field(FLNK,"$(SNAME):TEMP:AVG")
   field(MDEL,-1)
 }
@@ -101,6 +109,10 @@ record(calc,"$(SNAME):TEMP:$(LABEL02)") {
   field(HIGH,28)
   field(LOW,18)
   field(LOLO,12)
+  field(HHSV, "MAJOR")
+  field(HSV, "MINOR")
+  field(LSV, "MINOR")
+  field(LLSV, "MAJOR")
   field(FLNK,"$(SNAME):TEMP:AVG")
   field(MDEL,-1)
 }
@@ -124,6 +136,10 @@ record(calc,"$(SNAME):TEMP:$(LABEL03)") {
   field(HIGH,28)
   field(LOW,18)
   field(LOLO,12)
+  field(HHSV, "MAJOR")
+  field(HSV, "MINOR")
+  field(LSV, "MINOR")
+  field(LLSV, "MAJOR")
   field(FLNK,"$(SNAME):TEMP:AVG")
   field(MDEL,-1)
 }
@@ -141,4 +157,8 @@ record(calc,"$(SNAME):TEMP:AVG") {
   field(HIGH,28)
   field(LOW,18)
   field(LOLO,12)
+  field(HHSV, "MAJOR")
+  field(HSV, "MINOR")
+  field(LSV, "MINOR")
+  field(LLSV, "MAJOR")
 }
