@@ -13,13 +13,7 @@ record(calc,"$(SNAME):DIODE") {
   field(SCAN,"Passive")
   field(INPA,"$(SNAME):CH13:value")
   field(CALC,"A / 1024")
-  field(EGU,"degC")
-  field(HOPR,150)
-  field(LOPR,-55)
-  field(HIGH,45)
-  field(LOW,15)
-  field(HIHI,115)
-  field(LOLO,-35)
+  field(EGU,"C")
   field(MDEL,-1)
 }
 
@@ -29,11 +23,7 @@ record(ao,"$(SNAME):CH13:if"){
   field(SCAN,"Passive")
   field(DESC,"diode ideality factor")
   field(PREC,"9")
-  field(DRVH,"4")
-  field(HOPR,"4")
   field(VAL,"0")
-  field(LOPR,"0")
-  field(DRVL,"0")
   field(UDF,"1")
   field(PINI,"YES")
 }
@@ -54,8 +44,6 @@ record(calc,"$(SNAME):CH14:VOLT") {
 #  field(CALC,"A / 2^21 / 2.5")         # for RH probes @2.5V
   field(CALC,"A / 2^21")                # for RH probes @1V
   field(EGU,"V")
-  field(HOPR,1)
-  field(LOPR,0)
   field(FLNK,"$(SNAME):RH")
   field(MDEL,-1)
 }
@@ -64,9 +52,10 @@ record(calc,"$(SNAME):RH") {
   field(INPA,"$(SNAME):CH14:VOLT")
   field(CALC,"(A * 100)")
   field(EGU,"%")
-  field(HOPR,100)
-  field(LOPR,0)
-  field(FLNK,"$(SNAME):RH:FANOUT")
+  field(HIHI,20)
+  field(HIGH,10)
+  field(LOW,5)
+  field(LOLO,2)
   field(MDEL,-1)
 }
 
@@ -84,14 +73,12 @@ record(ai,"$(SNAME):CH16:value") {
 record(calc,"$(SNAME):TEMP:$(LABEL01)") {
   field(INPA,"$(SNAME):CH16:value")
   field(CALC,"A / 1024")
-  field(EGU,"degC")
-  field(HOPR,150)
-  field(LOPR,-55)
-  field(HIGH,45)
-  field(LOW,15)
-  field(HIHI,115)
-  field(LOLO,-35)
-  field(FLNK,"$(SNAME):BETA:$(LABEL01)")
+  field(EGU,"C")
+  field(HIHI,35)
+  field(HIGH,28)
+  field(LOW,18)
+  field(LOLO,12)
+  field(FLNK,"$(SNAME):TEMP:AVG")
   field(MDEL,-1)
 }
 
@@ -109,13 +96,12 @@ record(ai,"$(SNAME):CH18:value") {
 record(calc,"$(SNAME):TEMP:$(LABEL02)") {
   field(INPA,"$(SNAME):CH18:value")
   field(CALC,"A / 1024")
-  field(EGU,"degC")
-  field(HOPR,150)
-  field(LOPR,-55)
-  field(HIGH,45)
-  field(LOW,15)
-  field(HIHI,115)
-  field(LOLO,-35)
+  field(EGU,"C")
+  field(HIHI,35)
+  field(HIGH,28)
+  field(LOW,18)
+  field(LOLO,12)
+  field(FLNK,"$(SNAME):TEMP:AVG")
   field(MDEL,-1)
 }
 
@@ -133,110 +119,26 @@ record(ai,"$(SNAME):CH20:value") {
 record(calc,"$(SNAME):TEMP:$(LABEL03)") {
   field(INPA,"$(SNAME):CH20:value")
   field(CALC,"A / 1024")
-  field(EGU,"degC")
-  field(HOPR,150)
-  field(LOPR,-55)
-  field(HIGH,45)
-  field(LOW,15)
-  field(HIHI,115)
-  field(LOLO,-35)
+  field(EGU,"C")
+  field(HIHI,35)
+  field(HIGH,28)
+  field(LOW,18)
+  field(LOLO,12)
+  field(FLNK,"$(SNAME):TEMP:AVG")
   field(MDEL,-1)
 }
 
 #
-# Dew point calculation depends on RH variation,
-# this record fans the RH out to BETA records for a sector 
+# Temperature values average
 #
-record(fanout,"$(SNAME):RH:FANOUT") {
-  field(LNK1,"$(SNAME):BETA:$(LABEL01)")
-  field(LNK2,"$(SNAME):BETA:$(LABEL02)")
-  field(LNK3,"$(SNAME):BETA:$(LABEL03)")
-  field(SELM,"All")
-}
-
-# Dew point calculation is split in $(SNAME):BETA and $(SNAME):DEW
-# and it is based on Magnus-Tetens Approximation
-#    valid in the following range
-#     0° C < T < 60° C  
-#     0.01 < RH < 1.00  
-#     0° C < Td < 50° C  
-#    beta = ln(RH / 100)/17.27 + (T / (237.3 + T)) 
-#    dew = (237.3 * beta) / (1 - beta);
-record(calc,"$(SNAME):BETA:$(LABEL01)") {
+record(calc,"$(SNAME):TEMP:AVG") {
   field(INPA,"$(SNAME):TEMP:$(LABEL01)")
-  field(INPB,"$(SNAME):RH")
-  field(CALC,"LOGE(B/100)/17.27 + A / (237.3 + A)")
-  field(FLNK,"$(SNAME):DEW:$(LABEL01)")
-  field(MDEL,-1)
-}
-
-record(calc,"$(SNAME):DEW:$(LABEL01)") {
-  field(INPA,"$(SNAME):BETA:$(LABEL01)")
-  field(CALC,"(237.3 * A) / (1 - A)")
-  field(EGU,"degC")
-  field(HOPR,150)
-  field(LOPR,-55)
-  field(HIGH,45)
-  field(LOW,15)
-  field(HIHI,115)
-  field(LOLO,-35)
-  field(MDEL,-1)
-}
-
-# Dew point calculation is split in $(SNAME):BETA and $(SNAME):DEW
-# and it is based on Magnus-Tetens Approximation
-#    valid in the following range
-#     0° C < T < 60° C  
-#     0.01 < RH < 1.00  
-#     0° C < Td < 50° C  
-#    beta = ln(RH / 100)/17.27 + (T / (237.3 + T)) 
-#    dew = (237.3 * beta) / (1 - beta);
-record(calc,"$(SNAME):BETA:$(LABEL02)") {
-  field(INPA,"$(SNAME):TEMP:$(LABEL02)")
-  field(INPB,"$(SNAME):RH")
-  field(CALC,"LOGE(B/100)/17.27 + A / (237.3 + A)")
-  field(FLNK,"$(SNAME):DEW:$(LABEL02)")
-  field(MDEL,-1)
-}
-
-record(calc,"$(SNAME):DEW:$(LABEL02)") {
-  field(INPA,"$(SNAME):BETA:$(LABEL02)")
-  field(CALC,"(237.3 * A) / (1 - A)")
-  field(EGU,"degC")
-  field(HOPR,150)
-  field(LOPR,-55)
-  field(HIGH,45)
-  field(LOW,15)
-  field(HIHI,115)
-  field(LOLO,-35)
-  field(MDEL,-1)
-}
-
-# Dew point calculation is split in $(SNAME):BETA and $(SNAME):DEW
-# and it is based on Magnus-Tetens Approximation
-#    valid in the following range
-#     0° C < T < 60° C  
-#     0.01 < RH < 1.00  
-#     0° C < Td < 50° C  
-#    beta = ln(RH / 100)/17.27 + (T / (237.3 + T)) 
-#    dew = (237.3 * beta) / (1 - beta);
-record(calc,"$(SNAME):BETA:$(LABEL03)") {
-  field(INPA,"$(SNAME):TEMP:$(LABEL03)")
-  field(INPB,"$(SNAME):RH")
-  field(CALC,"LOGE(B/100)/17.27 + A / (237.3 + A)")
-  field(FLNK,"$(SNAME):DEW:$(LABEL03)")
-  field(MDEL,-1)
-}
-
-record(calc,"$(SNAME):DEW:$(LABEL03)") {
-  field(INPA,"$(SNAME):BETA:$(LABEL03)")
-  field(CALC,"(237.3 * A) / (1 - A)")
-  field(EGU,"degC")
-  field(HOPR,150)
-  field(LOPR,-55)
-  field(HIGH,45)
-  field(LOW,15)
-  field(HIHI,115)
-  field(LOLO,-35)
-  field(MDEL,-1)
+  field(INPB,"$(SNAME):TEMP:$(LABEL02)")
+  field(INPC,"$(SNAME):TEMP:$(LABEL03)")
+  field(CALC,"(A+B+C)/3")
+  field(EGU,"C")
+  field(HIHI,35)
+  field(HIGH,28)
+  field(LOW,18)
+  field(LOLO,12)
 }
