@@ -23,6 +23,7 @@ record(calc,"$(SNAME):TEMP:$(LABEL01)") {
   field(LLSV, "MAJOR")
   field(FLNK,"$(SNAME):TEMP:AVG")
   field(MDEL,-1)
+  alias("B2:ECL:$(SNAME):$(LABEL01)")
 }
 
 #
@@ -50,6 +51,7 @@ record(calc,"$(SNAME):TEMP:$(LABEL02)") {
   field(LLSV, "MAJOR")
   field(FLNK,"$(SNAME):TEMP:AVG")
   field(MDEL,-1)
+  alias("B2:ECL:$(SNAME):$(LABEL02)")
 }
 
 #
@@ -77,6 +79,7 @@ record(calc,"$(SNAME):TEMP:$(LABEL03)") {
   field(LLSV, "MAJOR")
   field(FLNK,"$(SNAME):TEMP:AVG")
   field(MDEL,-1)
+  alias("B2:ECL:$(SNAME):$(LABEL03)")
 }
 
 #
@@ -96,6 +99,7 @@ record(calc,"$(SNAME):TEMP:AVG") {
   field(HSV, "MINOR")
   field(LSV, "MINOR")
   field(LLSV, "MAJOR")
+  alias("B2:ECL:$(SNAME):TEMPAVG")
 }
 
 #
@@ -131,6 +135,7 @@ record(calc,"$(SNAME):RH") {
   field(LSV, "MINOR")
   field(LLSV, "MAJOR")
   field(MDEL,-1)
+  alias("B2:ECL:$(SNAME):RH")
 }
 
 #
