@@ -23,8 +23,26 @@ int main(void) {
       abort();
    }
 
+   //uint8_t v8;
+   //uint32_t v32;
+
+   // write 8 bit - read 8 bit
+   /*
+   LTC_reg_write(0xFF, (uint8_t) 0x22);
+   LTC_reg_read(0x00FF, v8);
+   printf("v8 = %d\n", v8);
+   */
+
+   // write 32 bit - read 32 bit
+   /*
+   LTC_reg_write(0xF4, (uint32_t) 0x11223344);
+   LTC_reg_read(0x00F4, v32);
+   printf("v32 = 0x%X\n", v32);
+   */
+
    // configure global parameters
    LTC_reg_write(0xF0, (uint8_t)(TEMP_UNIT__C | REJECTION__50_60_HZ));
+
    //LTC_reg_write(0xFF, (uint8_t)(50));	// set 5ms mux delay between conversions
    LTC_reg_write(0xFF, (uint8_t)(0));	// set 0ms mux delay between conversions
    LTC_reg_write(MULCONV_REG, (uint32_t)(0)); 	// initialize multiple conversion mask register
@@ -37,6 +55,7 @@ int main(void) {
 	(uint32_t) THERMISTOR_EXCITATION_CURRENT__AUTORANGE;
    LTC_ch_config(2, chdata);
    LTC_ch_add(2);
+
 
    // Channel 4: assign Thermistor 44006 10K@25C
    chdata = (uint32_t) SENSOR_TYPE__THERMISTOR_44006_10K_25C |

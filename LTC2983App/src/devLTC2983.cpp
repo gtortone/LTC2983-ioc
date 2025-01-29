@@ -128,8 +128,12 @@ static long init_device(int phase) {
       uint32_t chdata;
 
       // configure global parameters
+      printf("Configure register 0xF0....");
       LTC_reg_write(0xF0, (uint8_t)(TEMP_UNIT__C | REJECTION__50_60_HZ));
+      printf(" DONE\n");
+      printf("Configure register mux delay....");
       LTC_reg_write(0xFF, (uint8_t)(0));   // set 0ms mux delay between conversions
+      printf(" DONE\n");
       LTC_reg_write(MULCONV_REG, (uint32_t)(0));   // initialize multiple conversion mask register
 
       // Channel 2: assign Thermistor 44006 10K@25C

@@ -10,6 +10,7 @@
 #include <linux/spi/spidev.h>
 #include <iostream>
 #include <sstream>
+#include <unistd.h>
 
 #define READ    0x03
 #define WRITE   0x02

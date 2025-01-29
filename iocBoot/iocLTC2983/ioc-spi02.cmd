@@ -34,9 +34,9 @@ epicsEnvSet("LABEL_03","TEMP03")
 ## epicsEnvSet("LABEL_03","LYSO")
 
 ## configure module SPI bus number, SPI chip select
-## bus number 1 = /dev/spidev1.[cs]     uSOP label = JSPI0
-## bus number 2 = /dev/spidev2.[cs]     uSOP label = JSPI1
-devLTC2983config(2, 0)
+## bus number 0 = /dev/spidev0.[cs]	uSOP label = JSPI0   (connectors #1, #2)
+## bus number 1 = /dev/spidev1.[cs]	uSOP label = JSPI1   (connectors #3, #4)
+devLTC2983config(1, 0)
 
 ## Load record instances
 ## SNAME - sector name of ECL (e.g. S1F, S8B) F = forward , B = backward

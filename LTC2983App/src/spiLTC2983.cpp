@@ -64,34 +64,35 @@ bool LTC_SPI_close(void) {
 
 bool LTC_reg_read(uint16_t addr, uint8_t &value) {
 
-   struct spi_ioc_transfer tr[2];
    int ret;
-   uint8_t tx[3];
+   uint8_t tx[] = {READ, (uint8_t)((addr & 0xFF00) >> 8), (uint8_t)(addr & 0x00FF)};
    uint8_t rx;
 
-   tx[0] = READ;
-   tx[1] = (addr & 0xFF00) >> 8;        // MSB
-   tx[2] = (addr & 0x00FF);             // LSB
-
-   tr[0].tx_buf = (unsigned long)tx;
-   tr[0].rx_buf = (unsigned long)NULL;
-   tr[0].len = ARRAY_SIZE(tx);
-   tr[0].delay_usecs = delay;
-   tr[0].speed_hz = speed;
-   tr[0].bits_per_word = bits;
-   tr[0].cs_change = 0;
-
-   tr[1].tx_buf = (unsigned long)NULL;
-   tr[1].rx_buf = (unsigned long)&rx;
-   tr[1].len = 1;
-   tr[1].delay_usecs = delay;
-   tr[1].speed_hz = speed;
-   tr[1].bits_per_word = bits;
-   tr[1].cs_change = 1;
+   struct spi_ioc_transfer tr[2] =
+   {
+      {
+         .tx_buf = (unsigned long)tx,
+         .rx_buf = (unsigned long)NULL,
+         .len = ARRAY_SIZE(tx),
+         .speed_hz = speed,
+         .delay_usecs = delay,
+         .bits_per_word = bits,
+         .cs_change = 0,
+      },
+      {
+         .tx_buf = (unsigned long)NULL,
+         .rx_buf = (unsigned long)&rx,
+         .len = 1,
+         .speed_hz = speed,
+         .delay_usecs = delay,
+         .bits_per_word = bits,
+         .cs_change = 0,
+      },
+   };
 
    ret = ioctl(fd, SPI_IOC_MESSAGE(2), tr);
-   if (ret < 1) {
-      printf("LTC_reg_read: can't send spi message\n");
+   if (ret < 0) {
+      printf("LTC_reg_read(uint8_t): can't send spi message\n");
       return false;
    }
 
@@ -102,34 +103,35 @@ bool LTC_reg_read(uint16_t addr, uint8_t &value) {
 
 bool LTC_reg_read(uint16_t addr, uint32_t &value) {
 
-   struct spi_ioc_transfer tr[2];
    int ret;
-   uint8_t tx[3];
+   uint8_t tx[] = {READ, (uint8_t)((addr & 0xFF00) >> 8), (uint8_t)(addr & 0x00FF)};
    uint8_t rx[4];
 
-   tx[0] = READ;
-   tx[1] = (addr & 0xFF00) >> 8;        // MSB
-   tx[2] = (addr & 0x00FF);             // LSB
-
-   tr[0].tx_buf = (unsigned long)tx;
-   tr[0].rx_buf = (unsigned long)NULL;
-   tr[0].len = ARRAY_SIZE(tx);
-   tr[0].delay_usecs = delay;
-   tr[0].speed_hz = speed;
-   tr[0].bits_per_word = bits;
-   tr[0].cs_change = 0;
-
-   tr[1].tx_buf = (unsigned long)NULL;
-   tr[1].rx_buf = (unsigned long)&rx;
-   tr[1].len = ARRAY_SIZE(rx);
-   tr[1].delay_usecs = delay;
-   tr[1].speed_hz = speed;
-   tr[1].bits_per_word = bits;
-   tr[1].cs_change = 1;
+   struct spi_ioc_transfer tr[2] =
+   {
+      {
+         .tx_buf = (unsigned long)tx,
+         .rx_buf = (unsigned long)NULL,
+         .len = ARRAY_SIZE(tx),
+         .speed_hz = speed,
+         .delay_usecs = delay,
+         .bits_per_word = bits,
+         .cs_change = 0,
+      },
+      {
+         .tx_buf = (unsigned long)NULL,
+         .rx_buf = (unsigned long)&rx,
+         .len = ARRAY_SIZE(rx),
+         .speed_hz = speed,
+         .delay_usecs = delay,
+         .bits_per_word = bits,
+         .cs_change = 0,
+      },
+   };
 
    ret = ioctl(fd, SPI_IOC_MESSAGE(2), tr);
-   if (ret < 1) {
-      printf("LTC_reg_read: can't send spi message\n");
+   if (ret < 0) {
+      printf("LTC_reg_read(uint32_t): can't send spi message (errno=%d)\n", errno);
       return false;
    }
 
@@ -158,10 +160,11 @@ bool LTC_reg_write(uint16_t addr, uint8_t value) {
    tr.delay_usecs = delay;
    tr.speed_hz = speed;
    tr.bits_per_word = bits;
+   tr.cs_change = 0;
 
    ret = ioctl(fd, SPI_IOC_MESSAGE(1), &tr);
-   if (ret < 1) {
-      printf("LTC_reg_write: can't send spi message\n");
+   if (ret < 0) {
+      printf("LTC_reg_write(uint8_t): can't send spi message\n");
       return false;
    }
 
@@ -170,28 +173,31 @@ bool LTC_reg_write(uint16_t addr, uint8_t value) {
 
 bool LTC_reg_write(uint16_t addr, uint32_t value) {
 
-   struct spi_ioc_transfer tr;
    int ret;
    uint8_t tx[7];
 
    tx[0] = WRITE;
    tx[1] = (addr & 0xFF00) >> 8;        // MSB
    tx[2] = (addr & 0x00FF);             // LSB
-   tx[3] = (value & 0xFF000000) >> 24;	
-   tx[4] = (value & 0x00FF0000) >> 16;	
-   tx[5] = (value & 0x0000FF00) >> 8;	
-   tx[6] = value & 0x000000FF;	
-  
-   tr.tx_buf = (unsigned long)tx;
-   tr.rx_buf = (unsigned long)NULL;
-   tr.len = ARRAY_SIZE(tx);
-   tr.delay_usecs = delay;
-   tr.speed_hz = speed;
-   tr.bits_per_word = bits;
+   tx[3] = (value & 0xFF000000) >> 24;
+   tx[4] = (value & 0x00FF0000) >> 16;
+   tx[5] = (value & 0x0000FF00) >> 8;
+   tx[6] = value & 0x000000FF;
+
+   struct spi_ioc_transfer tr =
+   {
+      .tx_buf = (unsigned long)tx,
+      .rx_buf = (unsigned long)NULL,
+      .len = ARRAY_SIZE(tx),
+      .speed_hz = speed,
+      .delay_usecs = delay,
+      .bits_per_word = bits,
+      .cs_change = 0,
+   };
 
    ret = ioctl(fd, SPI_IOC_MESSAGE(1), &tr);
-   if (ret < 1) {
-      printf("LTC_reg_write: can't send spi message\n");
+   if (ret < 0) {
+      printf("LTC_reg_write(uint32_t): can't send spi message\n");
       return false;
    }
 
