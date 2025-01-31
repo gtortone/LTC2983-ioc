@@ -18,7 +18,7 @@ case "$1" in
   start)
     echo -n "Starting LTC2983-ioc"
     export EPICS_HOST_ARCH=linux-arm
-    export LD_LIBRARY_PATH=/opt/epics/base/lib/linux-arm
+    export LD_LIBRARY_PATH=/opt/epics/lib/linux-arm
 
     export EPICS_CAS_INTF_ADDR_LIST=$dev_eth0_1
     export EPICS_CAS_SERVER_PORT="6064"

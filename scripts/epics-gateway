@@ -9,7 +9,7 @@
 # Short-Description: Start EPICS PV gateway daemon
 ### END INIT INFO
 
-PATH=/bin:/usr/bin:/sbin:/usr/sbin:/usr/local/bin:/opt/epics/base/bin/linux-arm
+PATH=/bin:/usr/bin:/sbin:/usr/sbin:/usr/local/bin:/opt/epics/bin/linux-arm
 
 dev_eth0=`/sbin/ifconfig eth0 | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}'`
 dev_eth0_1=`/sbin/ifconfig eth0:1 | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}'`
@@ -19,9 +19,9 @@ case "$1" in
   start)
     echo -n "Starting EPICS PV gateway"
     export EPICS_HOST_ARCH=linux-arm
-    export LD_LIBRARY_PATH=/opt/epics/base/lib/linux-arm
+    export LD_LIBRARY_PATH=/opt/epics/lib/linux-arm
     # start PV Gateway
-    gateway -cip "$dev_eth0_1 $dev_eth0_2" -sip $dev_eth0 -archive -no_cache -cport 6064 -sport 5064 -server -home /opt/epics/base/bin/linux-arm
+    gateway -cip "$dev_eth0_1 $dev_eth0_2" -sip $dev_eth0 -archive -no_cache -cport 6064 -sport 5064 -server -home /opt/epics/bin/linux-arm
     echo "."
     ;;
   stop)
